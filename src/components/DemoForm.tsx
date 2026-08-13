@@ -179,7 +179,7 @@ export default function DemoForm({
         </p>
 
         <div ref={formRef}>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: "20px" }}>
             <div className="form-field">
               <input
                 type="text"
@@ -232,7 +232,7 @@ export default function DemoForm({
               />
             </div>
 
-            <div className="form-field pt-6">
+            <div className="form-field" style={{ marginTop: "12px" }}>
               <button
                 type="submit"
                 disabled={status === "sending"}

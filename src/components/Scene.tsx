@@ -51,53 +51,9 @@ function Blob({
   );
 }
 
-function Blobs({ scrollProgress }: { scrollProgress: number }) {
-  const groupRef = useRef<THREE.Group>(null!);
-
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = scrollProgress * 0.5;
-      groupRef.current.position.y = -scrollProgress * 2;
-    }
-  });
-
+export default function Scene() {
   return (
-    <group ref={groupRef}>
-      <Blob
-        position={[-2.5, 1, -2]}
-        color="#C08B7E"
-        speed={1.5}
-        distort={0.4}
-        scale={1.8}
-        opacity={0.7}
-      />
-      <Blob
-        position={[2, -0.5, -3]}
-        color="#C08B7E"
-        speed={1.2}
-        distort={0.35}
-        scale={1.4}
-        opacity={0.5}
-      />
-      <Blob
-        position={[0, 0.5, -4]}
-        color="#1C1917"
-        speed={1}
-        distort={0.3}
-        scale={2}
-        opacity={0.4}
-      />
-    </group>
-  );
-}
-
-export default function Scene({
-  scrollProgress,
-}: {
-  scrollProgress: number;
-}) {
-  return (
-    <div className="fixed inset-0" style={{ zIndex: -1 }}>
+    <div className="fixed inset-0" style={{ zIndex: 0 }}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         dpr={[1, 1.5]}
@@ -107,7 +63,30 @@ export default function Scene({
         <ambientLight intensity={0.6} />
         <pointLight position={[5, 5, 5]} intensity={0.8} color="#C08B7E" />
         <pointLight position={[-5, -3, 3]} intensity={0.5} color="#FAF7F2" />
-        <Blobs scrollProgress={scrollProgress} />
+        <Blob
+          position={[-2.5, 1, -2]}
+          color="#C08B7E"
+          speed={1.5}
+          distort={0.4}
+          scale={1.8}
+          opacity={0.7}
+        />
+        <Blob
+          position={[2, -0.5, -3]}
+          color="#C08B7E"
+          speed={1.2}
+          distort={0.35}
+          scale={1.4}
+          opacity={0.5}
+        />
+        <Blob
+          position={[0, 0.5, -4]}
+          color="#1C1917"
+          speed={1}
+          distort={0.3}
+          scale={2}
+          opacity={0.4}
+        />
       </Canvas>
     </div>
   );

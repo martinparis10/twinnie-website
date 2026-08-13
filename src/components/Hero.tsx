@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-export default function Hero() {
+export default function Hero({ onGetDemo }: { onGetDemo: () => void }) {
   const logoRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -22,84 +23,81 @@ export default function Hero() {
       );
 
       gsap.fromTo(
-        scrollIndicatorRef.current,
+        subtitleRef.current,
+        { opacity: 0, y: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.2,
+        }
+      );
+
+      gsap.fromTo(
+        buttonRef.current,
         { opacity: 0, y: 20 },
         {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          delay: 1.5,
           ease: "power2.out",
+          delay: 1.6,
         }
       );
-
-      gsap.to(scrollIndicatorRef.current, {
-        y: 10,
-        repeat: -1,
-        yoyo: true,
-        duration: 1.5,
-        ease: "sine.inOut",
-        delay: 2.3,
-      });
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="hero"
-      className="relative h-screen flex flex-col items-center justify-center"
-    >
+    <section className="relative z-10 h-screen flex flex-col items-center justify-center gap-10">
       <div ref={logoRef} className="text-center">
+        {/*
+          "twinnie" wordmark — both i's use a dotless ı (U+0131) so we can
+          place identically-sized custom dots above each one.  The second
+          dot is rose-colored; the first matches the text color.
+        */}
         <h1
           className="text-6xl md:text-8xl lg:text-9xl tracking-tight"
           style={{ fontFamily: "var(--font-libre)" }}
         >
-          <span className="text-dark">twinn</span>
+          <span className="text-dark">tw</span>
           <span className="relative inline-block text-dark">
-            i
+            ı
             <span
-              className="absolute top-[0.05em] left-1/2 -translate-x-1/2 w-[0.22em] h-[0.22em] rounded-full bg-rose"
-              style={{ marginTop: "-0.08em" }}
+              className="absolute left-1/2 -translate-x-1/2 w-[0.13em] h-[0.13em] rounded-full bg-dark"
+              style={{ top: "-0.05em" }}
+            />
+          </span>
+          <span className="text-dark">nn</span>
+          <span className="relative inline-block text-dark">
+            ı
+            <span
+              className="absolute left-1/2 -translate-x-1/2 w-[0.13em] h-[0.13em] rounded-full bg-rose"
+              style={{ top: "-0.05em" }}
             />
           </span>
           <span className="text-dark">e</span>
         </h1>
-        <p
-          className="mt-6 text-lg md:text-xl text-dark/60 tracking-widest uppercase"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          Virtual Try-On for Every Brand
-        </p>
       </div>
 
-      <div
-        ref={scrollIndicatorRef}
-        className="absolute bottom-12 flex flex-col items-center gap-2 text-dark/40"
+      <p
+        ref={subtitleRef}
+        className="text-lg md:text-xl text-dark/50 tracking-[0.25em] uppercase opacity-0"
+        style={{ fontFamily: "var(--font-sans)" }}
       >
-        <span
-          className="text-xs tracking-[0.3em] uppercase"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          Scroll
-        </span>
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          className="text-dark/40"
-        >
-          <path
-            d="M10 4 L10 16 M4 10 L10 16 L16 10"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
+        Virtual Try-On
+      </p>
+
+      <button
+        ref={buttonRef}
+        onClick={onGetDemo}
+        className="mt-4 px-10 py-4 bg-rose text-white text-sm md:text-base tracking-[0.2em] uppercase rounded-full hover:bg-rose-light transition-colors cursor-pointer opacity-0"
+        style={{ fontFamily: "var(--font-sans)", fontWeight: 600 }}
+      >
+        GET DEMO
+      </button>
     </section>
   );
 }

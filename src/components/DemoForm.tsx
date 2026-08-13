@@ -2,13 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function DemoForm() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const formContainerRef = useRef<HTMLDivElement>(null);
+export default function DemoForm({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,32 +21,86 @@ export default function DemoForm() {
     company: "",
     message: "",
   });
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
 
+  // Mount/unmount with animation
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        formContainerRef.current,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 60%",
-            end: "top 30%",
-            scrub: 1,
-          },
+    if (open) {
+      setMounted(true);
+    }
+  }, [open]);
+
+  // Animate in after mount
+  useEffect(() => {
+    if (!mounted) return;
+
+    if (open) {
+      const ctx = gsap.context(() => {
+        // Backdrop fades in
+        gsap.fromTo(
+          overlayRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4, ease: "power2.out" }
+        );
+
+        // Panel slides up from bottom with a slight scale
+        gsap.fromTo(
+          panelRef.current,
+          { y: "100%", scale: 0.95, opacity: 0 },
+          {
+            y: "0%",
+            scale: 1,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            delay: 0.1,
+          }
+        );
+
+        // Form fields stagger in
+        const fields = formRef.current?.querySelectorAll(".form-field");
+        if (fields) {
+          gsap.fromTo(
+            fields,
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              stagger: 0.08,
+              duration: 0.5,
+              ease: "power2.out",
+              delay: 0.4,
+            }
+          );
         }
-      );
+      });
+
+      return () => ctx.revert();
+    }
+  }, [mounted, open]);
+
+  const animateOut = () => {
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setMounted(false);
+        onClose();
+      },
     });
 
-    return () => ctx.revert();
-  }, []);
+    tl.to(panelRef.current, {
+      y: "100%",
+      opacity: 0,
+      duration: 0.4,
+      ease: "power3.in",
+    });
+    tl.to(
+      overlayRef.current,
+      { opacity: 0, duration: 0.3, ease: "power2.in" },
+      "-=0.2"
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +116,10 @@ export default function DemoForm() {
       if (res.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", message: "" });
-        setTimeout(() => setStatus("idle"), 4000);
+        setTimeout(() => {
+          setStatus("idle");
+          animateOut();
+        }, 2500);
       } else {
         setStatus("error");
         setTimeout(() => setStatus("idle"), 4000);
@@ -68,105 +130,133 @@ export default function DemoForm() {
     }
   };
 
+  if (!mounted) return null;
+
   return (
-    <section
-      ref={sectionRef}
-      id="demo"
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-24 bg-cream relative"
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ opacity: 0 }}
     >
-      <div ref={formContainerRef} className="max-w-lg w-full">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-dark/60 backdrop-blur-sm"
+        onClick={animateOut}
+      />
+
+      {/* Panel */}
+      <div
+        ref={panelRef}
+        className="relative w-full max-w-lg mx-6 bg-cream rounded-3xl shadow-2xl p-10 md:p-12"
+        style={{ opacity: 0 }}
+      >
+        {/* Close button */}
+        <button
+          onClick={animateOut}
+          className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center text-dark/30 hover:text-dark transition-colors cursor-pointer"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M4 4L16 16M16 4L4 16"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+
         <h2
-          className="text-3xl md:text-5xl text-dark text-center mb-4"
+          className="text-3xl md:text-4xl text-dark text-center mb-3"
           style={{ fontFamily: "var(--font-libre)" }}
         >
           Get a Demo
         </h2>
         <p
-          className="text-dark/50 text-center mb-12 text-lg"
+          className="text-dark/40 text-center mb-10 text-base"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           Let&apos;s build the future of online shopping.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <input
-              type="text"
-              placeholder="Name"
-              required
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
-              style={{ fontFamily: "var(--font-sans)" }}
-            />
-          </div>
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
-              style={{ fontFamily: "var(--font-sans)" }}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Company"
-              required
-              value={formData.company}
-              onChange={(e) =>
-                setFormData({ ...formData, company: e.target.value })
-              }
-              className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
-              style={{ fontFamily: "var(--font-sans)" }}
-            />
-          </div>
-          <div>
-            <textarea
-              placeholder="Message (optional)"
-              rows={4}
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-              className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors resize-none"
-              style={{ fontFamily: "var(--font-sans)" }}
-            />
-          </div>
+        <div ref={formRef}>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="form-field">
+              <input
+                type="text"
+                placeholder="Name"
+                required
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
+                style={{ fontFamily: "var(--font-sans)" }}
+              />
+            </div>
+            <div className="form-field">
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
+                style={{ fontFamily: "var(--font-sans)" }}
+              />
+            </div>
+            <div className="form-field">
+              <input
+                type="text"
+                placeholder="Company"
+                required
+                value={formData.company}
+                onChange={(e) =>
+                  setFormData({ ...formData, company: e.target.value })
+                }
+                className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors"
+                style={{ fontFamily: "var(--font-sans)" }}
+              />
+            </div>
+            <div className="form-field">
+              <textarea
+                placeholder="Message (optional)"
+                rows={3}
+                value={formData.message}
+                onChange={(e) =>
+                  setFormData({ ...formData, message: e.target.value })
+                }
+                className="w-full px-5 py-4 rounded-xl bg-white border border-dark/10 text-dark placeholder:text-dark/30 focus:outline-none focus:border-rose transition-colors resize-none"
+                style={{ fontFamily: "var(--font-sans)" }}
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="w-full py-4 rounded-xl bg-rose text-white font-semibold text-lg tracking-wide hover:bg-rose-light disabled:opacity-60 transition-all cursor-pointer"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            {status === "sending" ? "Sending..." : "Request Demo"}
-          </button>
-        </form>
+            <div className="form-field pt-2">
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="w-full py-4 rounded-xl bg-rose text-white font-semibold text-lg tracking-wide hover:bg-rose-light disabled:opacity-60 transition-all cursor-pointer"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                {status === "sending" ? "Sending..." : "Request Demo"}
+              </button>
+            </div>
+          </form>
 
-        {status === "success" && (
-          <div className="mt-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-center toast-enter">
-            Thanks! We&apos;ll be in touch soon.
-          </div>
-        )}
+          {status === "success" && (
+            <div className="mt-5 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-center toast-enter text-sm">
+              Thanks! We&apos;ll be in touch soon.
+            </div>
+          )}
 
-        {status === "error" && (
-          <div className="mt-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-center toast-enter">
-            Something went wrong. Please try again.
-          </div>
-        )}
+          {status === "error" && (
+            <div className="mt-5 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-center toast-enter text-sm">
+              Something went wrong. Please try again.
+            </div>
+          )}
+        </div>
       </div>
-
-      <footer className="absolute bottom-8 text-dark/30 text-sm" style={{ fontFamily: "var(--font-sans)" }}>
-        &copy; {new Date().getFullYear()} Twinnie. All rights reserved.
-      </footer>
-    </section>
+    </div>
   );
 }

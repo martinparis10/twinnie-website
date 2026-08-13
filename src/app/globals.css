@@ -15,32 +15,16 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
+html, body {
+  height: 100%;
+  overflow: hidden;
   background: var(--color-cream);
   color: var(--color-dark);
   font-family: var(--font-sans);
-  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-cream);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-rose);
-  border-radius: 3px;
 }
 
 @keyframes toast-in {

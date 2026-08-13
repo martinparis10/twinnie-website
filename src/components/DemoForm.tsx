@@ -147,7 +147,7 @@ export default function DemoForm({
       {/* Panel */}
       <div
         ref={panelRef}
-        className="relative w-full max-w-lg mx-6 bg-cream rounded-3xl shadow-2xl px-10 py-12 md:px-14 md:py-16"
+        className="relative w-full max-w-lg mx-6 bg-cream rounded-3xl shadow-2xl px-12 pt-16 pb-14 md:px-16 md:pt-20 md:pb-16"
         style={{ opacity: 0 }}
       >
         {/* Close button */}

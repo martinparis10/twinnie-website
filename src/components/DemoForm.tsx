@@ -147,7 +147,7 @@ export default function DemoForm({
       {/* Panel */}
       <div
         ref={panelRef}
-        className="relative w-full max-w-lg mx-6 bg-cream rounded-3xl shadow-2xl p-10 md:p-12"
+        className="relative w-full max-w-lg mx-6 bg-cream rounded-3xl shadow-2xl px-10 py-12 md:px-14 md:py-16"
         style={{ opacity: 0 }}
       >
         {/* Close button */}
@@ -166,20 +166,20 @@ export default function DemoForm({
         </button>
 
         <h2
-          className="text-3xl md:text-4xl text-dark text-center mb-3"
+          className="text-3xl md:text-4xl text-dark text-center mb-4"
           style={{ fontFamily: "var(--font-libre)" }}
         >
           Get a Demo
         </h2>
         <p
-          className="text-dark/40 text-center mb-10 text-base"
+          className="text-dark/40 text-center mb-14 text-base"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           Let&apos;s build the future of online shopping.
         </p>
 
         <div ref={formRef}>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="form-field">
               <input
                 type="text"
@@ -232,7 +232,7 @@ export default function DemoForm({
               />
             </div>
 
-            <div className="form-field pt-4">
+            <div className="form-field pt-6">
               <button
                 type="submit"
                 disabled={status === "sending"}

@@ -6,7 +6,7 @@ export default function Hero({ onGetDemo }: { onGetDemo: () => void }) {
       {/* GET DEMO — top right */}
       <button
         onClick={onGetDemo}
-        className="absolute top-8 right-8 md:top-10 md:right-12 px-6 py-2.5 border border-dark/20 text-dark text-xs tracking-[0.2em] uppercase rounded-full hover:bg-dark hover:text-cream transition-all cursor-pointer"
+        className="absolute top-8 right-8 md:top-10 md:right-12 px-7 py-3 bg-dark text-cream text-xs tracking-[0.2em] uppercase rounded-full hover:bg-dark/80 transition-all cursor-pointer"
         style={{ fontFamily: "var(--font-sans)", fontWeight: 600 }}
       >
         GET DEMO

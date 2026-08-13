@@ -179,7 +179,7 @@ export default function DemoForm({
         </p>
 
         <div ref={formRef}>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="form-field">
               <input
                 type="text"
@@ -232,11 +232,11 @@ export default function DemoForm({
               />
             </div>
 
-            <div className="form-field pt-2">
+            <div className="form-field pt-4">
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full py-4 rounded-xl bg-rose text-white font-semibold text-lg tracking-wide hover:bg-rose-light disabled:opacity-60 transition-all cursor-pointer"
+                className="w-full py-4 rounded-xl bg-dark text-cream font-semibold text-lg tracking-wide hover:bg-dark/80 disabled:opacity-60 transition-all cursor-pointer"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 {status === "sending" ? "Sending..." : "Request Demo"}

@@ -4,7 +4,7 @@
 
 This section supersedes the original September 16 implementation notes below.
 
-Handoff branch: `codex/twinnie-alpha-desktop-mobile`. The [original alpha journey](original-alpha-user-journey.pdf) is included with the design reference.
+Preview branch: `codex/alpha-prototype`. The same implementation is also saved on `codex/twinnie-alpha-desktop-mobile`. The [original alpha journey](original-alpha-user-journey.pdf) is included with the design reference.
 
 Review the [brand board](brand-board.png), [desktop studio](screenshots/desktop-studio.jpg), [mobile studio](screenshots/mobile-studio.jpg), [open mobile wardrobe](screenshots/mobile-wardrobe-open.jpg), and [camera instructions](screenshots/mobile-camera-instructions.jpg).
 
@@ -18,7 +18,7 @@ Review the [brand board](brand-board.png), [desktop studio](screenshots/desktop-
 
 Validation: production build, TypeScript and scoped ESLint passed. Nine automated camera tests cover photo/video timing, cancellation, permission denial, late stream resolution, background cleanup, camera switching and unsupported/insecure contexts. Browser walkthrough checked the sample flow, restored optional preference, revised capture text and action order, Back/Forward, desktop sidebar, and the 393px mobile drawer at exactly 80% viewport width. Garment selection closed the drawer and restored menu focus. The production build rendered the sample body and hid the progress labels on the studio screen. Actual iPhone camera permission/recording still needs device testing. Automated file selection was blocked by the Chrome extension file-URL permission, so no new end-to-end file-picker claim is made.
 
-For a phone camera, the hosted preview must use HTTPS; localhost works only on the computer running the server. No public deployment was performed. Personal reconstruction, garment fitting, verification, uploads, consent persistence and server retention/deletion remain unconnected.
+For a phone camera, the hosted preview must use HTTPS; localhost works only on the computer running the server. The Vercel preview may require project sign-in. Personal reconstruction, garment fitting, verification, uploads, consent persistence and server retention/deletion remain unconnected.
 
 ## Original September 16 handoff
 

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { nameError, phoneError } from "@/lib/waitlist-fields";
 
 // Preserve the existing website's delivery destination and configured sender.
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL || "martin@trytwinnie.com";
@@ -36,17 +37,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (typeof body.email !== "string" || (body.name !== undefined && typeof body.name !== "string")) {
+  if (typeof body.email !== "string") {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   }
+  if (typeof body.name !== "string" || typeof body.phone !== "string") {
+    return NextResponse.json({ error: "Name and phone number are required." }, { status: 400 });
+  }
   const email = body.email.trim().toLowerCase();
-  const name = (typeof body.name === "string" ? body.name : "").trim();
+  const name = body.name.trim();
+  const phone = body.phone.trim();
 
   if (email.length > 254 || !/^[^\s@<>"(),;:\\]+@[^\s@<>"(),;:\\]+\.[^\s@<>"(),;:\\]+$/.test(email)) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
   }
-  if (name.length > 100 || /[\r\n\x00-\x1f\x7f]/.test(name)) {
-    return NextResponse.json({ error: "Please enter a name of 100 characters or fewer." }, { status: 400 });
+  const validationError = nameError(name) || phoneError(phone);
+  if (validationError) {
+    return NextResponse.json({ error: validationError }, { status: 400 });
   }
   if (body.website) {
     return NextResponse.json({ error: "We couldn’t accept this submission. Please try again." }, { status: 400 });
@@ -68,8 +74,8 @@ export async function POST(req: NextRequest) {
       to: TO_EMAIL,
       replyTo: email,
       subject: "New Twinnie waitlist signup",
-      text: [`New Twinnie waitlist signup`, `Email: ${email}`, `Name: ${name || "(not provided)"}`, "Source: trytwinnie.com waitlist"].join("\n"),
-      html: `<h2>New Twinnie waitlist signup</h2><p><strong>Email:</strong> ${escapeHtml(email)}</p><p><strong>Name:</strong> ${escapeHtml(name || "(not provided)")}</p><p>Source: trytwinnie.com waitlist</p>`,
+      text: [`New Twinnie waitlist signup`, `Email: ${email}`, `Name: ${name}`, `Phone: ${phone}`, "Source: trytwinnie.com waitlist"].join("\n"),
+      html: `<h2>New Twinnie waitlist signup</h2><p><strong>Email:</strong> ${escapeHtml(email)}</p><p><strong>Name:</strong> ${escapeHtml(name)}</p><p><strong>Phone:</strong> ${escapeHtml(phone)}</p><p>Source: trytwinnie.com waitlist</p>`,
     }, { idempotencyKey });
 
     if (error?.name === "invalid_idempotent_request") {

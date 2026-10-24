@@ -52,20 +52,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 .waitlist-dialog::backdrop { background: rgba(28, 25, 23, 0.38); backdrop-filter: blur(9px); }
 .waitlist-dialog[open] { animation: toast-in 0.35s ease-out both; }
-.waitlist-panel { position: relative; padding: 42px 44px 36px; }
+.waitlist-panel { position: relative; padding: 30px 44px 24px; }
 .waitlist-close {
   position: absolute; top: 14px; right: 14px; width: 44px; height: 44px; display: grid; place-items: center;
   border: 0; border-radius: 50%; color: #6b625c; background: transparent; cursor: pointer;
 }
 .waitlist-close:hover { background: #eee5dd; color: var(--color-dark); }
-.waitlist-accent { display: flex; justify-content: center; align-items: center; height: 40px; margin-bottom: 22px; }
+.waitlist-accent { display: flex; justify-content: center; align-items: center; height: 40px; margin-bottom: 14px; }
 .waitlist-accent span { width: 34px; height: 34px; border-radius: 50%; background: #d8c5ba; opacity: .8; }
 .waitlist-accent span:nth-child(2) { margin-left: -10px; background: var(--color-rose); width: 40px; height: 40px; }
 .waitlist-accent span:nth-child(3) { margin-left: -10px; background: #988981; width: 27px; height: 27px; }
 .waitlist-eyebrow { text-align: center; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: .17em; color: #77635b; margin-bottom: 13px; }
 .waitlist-panel h2 { text-align: center; font-family: var(--font-libre), serif; font-size: clamp(26px, 5vw, 34px); font-weight: 400; line-height: 1.3; letter-spacing: -.045em; }
-.waitlist-description { margin: 14px auto 28px; max-width: 310px; color: #71665f; text-align: center; font-size: 16px; line-height: 1.5; }
-.waitlist-form { display: flex; flex-direction: column; gap: 19px; }
+.waitlist-description { margin: 14px auto 20px; max-width: 310px; color: #71665f; text-align: center; font-size: 16px; line-height: 1.5; }
+.waitlist-form { display: flex; flex-direction: column; gap: 16px; }
 .waitlist-field { display: flex; flex-direction: column; gap: 9px; }
 .waitlist-field label { font-size: 14px; font-weight: 600; }
 .waitlist-field label span { color: #776d65; font-weight: 400; }

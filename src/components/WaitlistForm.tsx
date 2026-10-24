@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { nameError, phoneError } from "@/lib/waitlist-fields";
 
 export default function WaitlistForm({ open, onClose }: {
   open: boolean;
@@ -11,6 +12,7 @@ export default function WaitlistForm({ open, onClose }: {
   const submitting = useRef(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState("");
@@ -24,6 +26,12 @@ export default function WaitlistForm({ open, onClose }: {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting.current || status === "success") return;
+    const validationError = nameError(name) || phoneError(phone);
+    if (validationError) {
+      setError(validationError);
+      setStatus("error");
+      return;
+    }
     submitting.current = true;
     setStatus("sending");
     setError("");
@@ -32,7 +40,7 @@ export default function WaitlistForm({ open, onClose }: {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, website }),
+        body: JSON.stringify({ name, email, phone, website }),
         signal: AbortSignal.timeout(15000),
       });
       const result = await response.json();
@@ -88,10 +96,22 @@ export default function WaitlistForm({ open, onClose }: {
                 onChange={(event) => setEmail(event.target.value)} />
             </div>
             <div className="waitlist-field">
-              <label htmlFor="waitlist-name">Name <span>(optional)</span></label>
-              <input id="waitlist-name" name="name" type="text" autoComplete="given-name" maxLength={100}
+              <label htmlFor="waitlist-name">Name <span>(required)</span></label>
+              <input id="waitlist-name" name="name" type="text" autoComplete="name" required maxLength={100}
                 placeholder="What should we call you?" value={name} disabled={status === "sending"}
-                onChange={(event) => setName(event.target.value)} />
+                onChange={(event) => {
+                  setName(event.target.value);
+                  event.target.setCustomValidity(nameError(event.target.value));
+                }} />
+            </div>
+            <div className="waitlist-field">
+              <label htmlFor="waitlist-phone">Phone number <span>(required)</span></label>
+              <input id="waitlist-phone" name="phone" type="tel" autoComplete="tel" required maxLength={40}
+                placeholder="+44 20 7946 0958" value={phone} disabled={status === "sending"}
+                onChange={(event) => {
+                  setPhone(event.target.value);
+                  event.target.setCustomValidity(phoneError(event.target.value));
+                }} />
             </div>
             <div className="waitlist-honeypot" aria-hidden="true">
               <label htmlFor="waitlist-website">Leave this field empty</label>

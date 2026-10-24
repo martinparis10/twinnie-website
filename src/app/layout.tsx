@@ -17,14 +17,14 @@ const josefinSans = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Twinnie — Virtual Try-On for Every Brand",
+  title: "Twinnie — Join the waitlist",
   description:
-    "One scan. A photorealistic digital twin. Try on anything, anywhere. Twinnie brings virtual try-on to online shopping.",
-  keywords: ["virtual try-on", "digital twin", "online shopping", "fashion tech"],
+    "Join the Twinnie waitlist. Be the first to know when you can get started.",
+  keywords: ["Twinnie", "online shopping", "fashion tech", "waitlist"],
   openGraph: {
-    title: "Twinnie — Virtual Try-On for Every Brand",
+    title: "Twinnie — Join the waitlist",
     description:
-      "One scan. A photorealistic digital twin. Try on anything, anywhere.",
+      "Join the Twinnie waitlist. Be the first to know when you can get started.",
     type: "website",
   },
 };

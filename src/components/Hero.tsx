@@ -1,18 +1,19 @@
 "use client";
 
-export default function Hero({ onGetDemo }: { onGetDemo: () => void }) {
+export default function Hero({ onJoinWaitlist }: { onJoinWaitlist: () => void }) {
   return (
     <section className="relative z-10 h-screen flex flex-col items-center justify-center">
-      {/* GET DEMO — top right */}
+      {/* Waitlist — top right */}
       <button
-        onClick={onGetDemo}
-        className="absolute top-8 right-8 md:top-10 md:right-12 bg-dark text-cream text-sm tracking-[0.2em] uppercase rounded-full hover:bg-dark/80 transition-all cursor-pointer"
-        style={{ fontFamily: "var(--font-sans)", fontWeight: 600, padding: "20px 48px" }}
+        onClick={onJoinWaitlist}
+        className="hero-waitlist-button absolute top-8 right-8 md:top-10 md:right-12 bg-dark text-cream text-sm tracking-[0.2em] uppercase rounded-full hover:bg-dark/80 transition-all cursor-pointer"
+        aria-haspopup="dialog"
+        style={{ fontFamily: "var(--font-sans)", fontWeight: 600 }}
       >
-        GET DEMO
+        Join waitlist
       </button>
 
-      {/* Logo + subtitle — centered */}
+      {/* Logo — centered */}
       <div className="text-center">
         <h1
           className="text-6xl md:text-8xl lg:text-9xl tracking-tight"
@@ -37,12 +38,6 @@ export default function Hero({ onGetDemo }: { onGetDemo: () => void }) {
           <span className="text-dark">e</span>
         </h1>
 
-        <p
-          className="mt-8 text-lg md:text-xl text-dark/50 tracking-[0.25em] uppercase"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          Virtual Try-On
-        </p>
       </div>
     </section>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Libre_Baskerville, Josefin_Sans } from "next/font/google";
 import "./globals.css";
+import "./signup.css";
+import { SignupPreviewProvider } from "@/components/signup/SignupPreview";
 
 const libreBaskerville = Libre_Baskerville({
   variable: "--font-libre",
@@ -39,7 +41,7 @@ export default function RootLayout({
       <body
         className={`${libreBaskerville.variable} ${josefinSans.variable} antialiased`}
       >
-        {children}
+        <SignupPreviewProvider>{children}</SignupPreviewProvider>
       </body>
     </html>
   );

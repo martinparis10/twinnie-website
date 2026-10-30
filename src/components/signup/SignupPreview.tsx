@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type PreviewSession = {
   phone: string;
@@ -32,7 +33,7 @@ export function SignupShell({ children, home = false }: { children: ReactNode; h
   return (
     <div className={`signup-shell${home ? " signup-shell-home" : ""}`}>
       {home && <header className="signup-header">
-        <Link href="/" className="signup-logo" aria-label="Twinnie home">twinnie</Link>
+        <Link href="/" className="signup-logo" aria-label="Twinnie home"><Image src="/images/twinnie-mascot-tile.png" alt="" width={540} height={540} priority /></Link>
       </header>}
       <main className="signup-main">{children}</main>
       <footer className="signup-footer">

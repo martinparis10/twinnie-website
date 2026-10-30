@@ -184,7 +184,7 @@ const policy = [
 export default function PrivacyPage() {
   return (
     <main className="h-dvh overflow-y-auto bg-rose text-dark" style={{ padding: "48px 24px" }}>
-      <article className="max-w-3xl" style={{ margin: "0 auto", fontFamily: "Arial, sans-serif", lineHeight: 1.7 }}>
+      <article className="max-w-3xl" style={{ margin: "0 auto", fontFamily: "var(--font-libre), \"Libre Baskerville\", serif", lineHeight: 1.7 }}>
         <nav aria-label="Back to home" style={{ marginBottom: 32 }}>
           <Link href="/" className="underline underline-offset-4">Twinnie home</Link>
         </nav>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Arrow, SignupShell, useSignupPreview } from "./SignupPreview";
 
@@ -21,8 +22,14 @@ export default function MessageTwinnie() {
   return (
     <SignupShell>
       <section className="signup-form-panel signup-message" aria-labelledby="message-title">
-        <h1 id="message-title">Message Twinnie</h1>
-        <p className="signup-description">You’re all set. Start a conversation in iMessage.</p>
+        <h1 id="message-title">Meet your twinnie</h1>
+        <div className="signup-message-icons">
+          <Image src="/images/imessage-icon.png" alt="iMessage" width={270} height={270} className="signup-message-imessage" />
+          <div className="signup-message-twinnie">
+            <span className="signup-message-bubble" aria-hidden="true">hey, i’m twinnie</span>
+            <Image src="/images/twinnie-mascot-tile.png" alt="Twinnie" width={540} height={540} />
+          </div>
+        </div>
         <a className="signup-primary" href={messageHref} onClick={() => setOpened(true)}>Message Twinnie <Arrow /></a>
         <p className="signup-form-note">Opens Messages on your device.</p>
         {opened && <p className="signup-message-help" role="status">If Messages didn’t open, try this page on your iPhone.</p>}

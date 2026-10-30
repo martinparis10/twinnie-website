@@ -57,7 +57,7 @@
 .signup-home h1 { font: inherit; margin-bottom: 40px; }
 .signup-home p { margin-bottom: 40px; }
 .signup-home-links { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.signup-home-links a { display: inline-flex; align-items: center; gap: 12px; color: #1C1917; font-size: 20px; text-decoration: none; }
+.signup-home-links a { display: inline-flex; align-items: center; gap: 12px; color: #1C1917; font-size: inherit; text-decoration: none; }
 .signup-home-links a::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #FAF7F2; transition: transform .15s ease; }
 .signup-home-links a + a { color: #1C1917b3; }
 .signup-home-links a + a::before { visibility: hidden; }
@@ -70,8 +70,8 @@
   .signup-town img { max-height: clamp(420px, calc(100dvh - 260px), 720px); }
 }
 @media (min-width: 1200px) {
-  .signup-home { align-self: end; padding-bottom: calc(18% + 1.3em + 20px); }
-  .signup-home h1 { margin-bottom: 72px; }
+  .signup-home { align-self: end; padding-bottom: calc(18% + 1.3em - 30px); }
+  .signup-home h1 { margin-bottom: 112px; }
   .signup-town { width: 130%; justify-self: end; }
   .signup-town img { max-height: none; }
 }

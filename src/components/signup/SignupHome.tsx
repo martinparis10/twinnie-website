@@ -9,7 +9,7 @@ export default function SignupHome() {
     <SignupShell home>
       <div className="signup-home-layout">
       <section className="signup-home" aria-labelledby="home-title">
-        <h1 id="home-title">it starts with a text.<br />it ends with the right product in your hands.</h1>
+        <h1 id="home-title">it starts with a text.<br />it ends with the right thing for you.</h1>
         <nav className="signup-home-links" aria-label="Get started">
           <Link href="/sign-in">try twinnie</Link>
           <Link href="/sign-in">log in</Link>

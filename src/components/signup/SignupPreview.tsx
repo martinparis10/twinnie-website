@@ -37,7 +37,6 @@ export function SignupShell({ children, home = false }: { children: ReactNode; h
       </header>}
       <main className="signup-main">{children}</main>
       <footer className="signup-footer">
-        <span className="signup-preview-note">Local preview · No texts sent</span>
         <Link href={home ? "/privacy" : "/"}>{home ? "Privacy policy" : "Back to home"}</Link>
       </footer>
     </div>
